@@ -1,0 +1,134 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Vaccination Spot",
+    "version": "1.0",
+    "description": "When the consultation has been accepted by the doctor and society will register the vaccination, the society can choose the vaccination spot based on the society region. List of available vaccines at each vaccine spot should also be displayed. In the spot detail, calculate the number of vaccination registrations at that spot and on the requested date in the date param (optional and default today)."
+  },
+  "servers": [{ "url": "https://api.server.test/" }],
+  "paths": {
+    "/api/v1/spots": {
+      "get": {
+        "description": "Get all vaccine spots by society region Request",
+        "parameters": [
+          {
+            "name": "token",
+            "schema": {
+              "type": "string",
+              "example": "ojed903jqo8jio48nq"
+            },
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "success": {
+                    "value": {
+                      "spots": [
+                        {
+                          "id": 1,
+                          "name": "Purnawati Hospital",
+                          "address": "Jr. Gotong Royong",
+                          "serve": "1|2|3",
+                          "capacity": 15,
+                          "available_vaccines": {
+                            "Sinovac": true,
+                            "AstraZeneca": false,
+                            "Moderna": true,
+                            "Pfizer": true,
+                            "Sinnopharm": false
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "If invalid token Header",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "invalid token": {
+                    "value": {
+                      "message": "Unauthorized user"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/spots/{spot_id}": {
+      "get": {
+        "description": "Get spot detail by spot ID and date Request",
+        "parameters": [
+          {
+            "name": "spot_id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            },
+            "in": "path"
+          },
+          {
+            "name": "token",
+            "in": "header"
+          },
+          {
+            "name": "date",
+            "description": "optional and default today",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "response": {
+                    "value": {
+                      "date": "October 21, 2021",
+                      "spot": {
+                        "id": 1,
+                        "name": "Purnawati Hospital",
+                        "address": "Jr. Gotong Royong No. 264",
+                        "serve": 2,
+                        "capacity": 15
+                      },
+                      "vaccinations_count": 12
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "If invalid token Header",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "invalid token": {
+                    "value": {
+                      "message": "Unauthorized user"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

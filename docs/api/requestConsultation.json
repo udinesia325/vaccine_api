@@ -1,0 +1,123 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Request Consultation",
+    "version": "1.0",
+    "description": "Request Consultation: As a society, I want to request consultation so that I can register for vaccination when my consultation is accepted. "
+  },
+  "servers": [{ "url": "https://api.server.test/" }],
+  "paths": {
+    "/api/v1/consultations": {
+      "post": {
+        "description": "Request consultation :",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "disease_history": {
+                    "type": "string"
+                  },
+                  "current_symptoms": {
+                    "type": "string"
+                  }
+                }
+              },
+              "examples": {
+                "request1": {
+                  "value": {
+                    "disease_history": "anemia",
+                    "current_symptoms": "dizzy"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "If request consultation success",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "success": {
+                    "value": {
+                      "message": "Request consultation sent successful"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "If invalid token Header",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "invalid token": {
+                    "value": {
+                      "message": "Unauthorized user"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "description": "Get society consultation Request",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "response": {
+                    "value": {
+                      "consultation": {
+                        "id": 1,
+                        "status": "pending | accepted | rejected",
+                        "disease_history": "SomeText |null",
+                        "current_symptoms": "SomeText | null",
+                        "doctor_notes": "SomeText | null",
+                        "doctor": "{ DOCTOR } | null"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "If invalid token Header",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "invalid token": {
+                    "value": {
+                      "message": "Unauthorized user"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

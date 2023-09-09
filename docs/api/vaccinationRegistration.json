@@ -1,0 +1,177 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Vaccination Registration",
+    "version": "1.0",
+    "description": "The society can register for vaccination if the society consultation has been accepted by the doctor. At the vaccination register, if the society has finished the first vaccination, it will automatically register the second vaccination. Society can register for a second vaccination on condition that they have to wait 30 days after the first vaccination day and each society can only register for vaccination 2 times. Society can be said to be vaccinated if it has received a dose of the vaccine.  Spot ID and date must be filled where the date format is YYYY-MM-DD."
+  },
+  "servers": [{ "url": "https://api.server.test/" }],
+  "paths": {
+    "/api/v1/vaccinations": {
+      "post": {
+        "description": "Vaccination: as a society, i want to register vaccination and get all vaccination data.",
+        "summary": "Register Vaccination Request",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["spot_id", "date"],
+                "properties": {
+                  "spot_id": {
+                    "type": "integer"
+                  },
+                  "date": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "examples": {
+                "body": {
+                  "value": {
+                    "spot_id": 1,
+                    "date": "2021-10-26"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "success": {
+                    "value": {
+                      "message": "First|Second vaccination registered successful"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid Responses",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "invalid token": {
+                    "description": "invalid token in header",
+                    "value": {
+                      "message": "Unauthorized user"
+                    }
+                  },
+                  "not accepted": {
+                    "description": "if the society consultation hasn't accepted by doctor",
+                    "value": {
+                      "message": "Your consultation must be accepted by doctor before"
+                    }
+                  },
+                  "invalid fields": {
+                    "description": "If invalid fields Header",
+                    "value": {
+                      "message": "Invalid field",
+                      "errors": {
+                        "date": ["The date does not match the format Y-m-d."],
+                        "spot_id": ["The spot id field is required."]
+                      }
+                    }
+                  },
+                  "2nd vaccination < 30 days": {
+                    "description": "If 2nd vaccination < 30 days from 1st vaccination ",
+                    "value": {
+                      "message": "Wait at least +30 days from 1stvVaccination"
+                    }
+                  },
+                  "have been 2x vaccinated": {
+                    "description": "If have been 2x vaccinated ",
+                    "value": {
+                      "message": "Society has been 2x vaccinated"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "description": "Get all of society vaccinations Request",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "all society request": {
+                    "value": {
+                      "vaccinations": {
+                        "first": {
+                          "queue": 1,
+                          "dose": 1,
+                          "vaccination_date": "2021-10-21",
+                          "spot": {
+                            "id": 1,
+                            "name": "Purnawati Hospital",
+                            "address": "Jr. Gotong Royong",
+                            "serve": 2,
+                            "capacity": 15,
+                            "regional": {
+                              "id": 1,
+                              "province": "DKI Jakarta",
+                              "district": "Central Jakarta"
+                            }
+                          },
+                          "status": "done",
+                          "vaccine": {
+                            "id": 1,
+                            "name": "Sinovac"
+                          },
+                          "vaccinator": {
+                            "id": 1,
+                            "role": "doctor",
+                            "name": "Dr. Halima Yuniar"
+                          }
+                        },
+                        "second": "<VACCINATION> | null"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid Responses",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "invalid token": {
+                    "description": "invalid token in header",
+                    "value": {
+                      "message": "Unauthorized user"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

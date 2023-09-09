@@ -1,0 +1,123 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Authentication",
+    "version": "1.0",
+    "description": "Login and Logout as society: as a visitor, i want to login so that i can enter the system and register a vaccination. Scenario: Society Login  Request:  "
+  },
+  "servers": [{ "url": "https://api.server.test/" }],
+  "paths": {
+    "/api/v1/auth/login": {
+      "post": {
+        "description": "Before a society performs any activity on the society platform, they must be logged in using their ID card number and password. After successfully logging in, the token will be automatically generated from the md5 of society ID card number. ",
+        "requestBody": {
+          "description": "credentials",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "password"],
+                "properties": {
+                  "id_card_number": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              },
+              "examples": {
+                "user1": {
+                  "value": {
+                    "id_card_number": "928392",
+                    "password": "rahasia"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "If login success",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "user1": {
+                    "value": {
+                      "name": "Siti Puspita",
+                      "born_date": "1974-10-22",
+                      "gender": "male | female",
+                      "address": "Ki. Raya Setiabudhi No. 790",
+                      "token": "e96aaafb6f2f76460b8cc93723bd030e",
+                      "regional": {
+                        "id": 1,
+                        "province": "DKI Jakarta",
+                        "district": "Central Jakarta"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "If ID Card Number or Password incorrect ",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "invalid id or password": {
+                    "value": {
+                      "message": "ID Card Number or Password incorrect"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/logout": {
+      "post": {
+        "description": "Society Logout Request",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "If logout success",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "success": {
+                    "value": {
+                      "message": "Logout success"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "If logout invalid token ",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "invalid token": {
+                    "value": {
+                      "message": "Invalid token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
