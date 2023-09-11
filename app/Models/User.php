@@ -2,44 +2,59 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class User extends Authenticatable
+class User extends Model implements Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasFactory;
+    protected $table = "user";
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    protected $guarded = ["id"];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    public function consultation(): HasMany
+    {
+        return $this->hasMany(Consultations::class);
+    }
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-    ];
+    public function regional(): BelongsTo
+    {
+        return $this->belongsTo(Regional::class);
+    }
+
+    public function getAuthIdentifierName()
+    {
+        return "name";
+    }
+
+    public function getAuthIdentifier()
+    {
+        return $this->name;
+    }
+
+
+    public function getAuthPassword()
+    {
+        return $this->password;
+    }
+
+
+    public function getRememberToken()
+    {
+        return $this->token;
+    }
+
+
+    public function setRememberToken($value)
+    {
+        return $this->token = $value;
+    }
+
+    function getRememberTokenName()
+    {
+        return "token";
+    }
 }

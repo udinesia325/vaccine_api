@@ -20,7 +20,7 @@ return new class extends Migration
             $table->enum("gender",['male','female']);
             $table->text("address");
             $table->unsignedBigInteger("regional_id")->nullable(false);
-            $table->string("token");
+            $table->string("token")->nullable();
             $table->timestamps();
             $table->foreign("regional_id")->on("regional")->references("id");
         });
