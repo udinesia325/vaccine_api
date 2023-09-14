@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\ApiTokenMiddleware;
 use Illuminate\Http\Request;
@@ -24,4 +25,8 @@ Route::post("/auth/login",[UserController::class,"login"]);
 
 Route::middleware(ApiTokenMiddleware::class)->group(function(){
     Route::post("/auth/logout",[UserController::class,"logout"]);
+
+    // consultations
+    Route::get("/consultations",[ConsultationController::class,"show"]);
+    Route::post("/consultations",[ConsultationController::class,"store"]);
 });
