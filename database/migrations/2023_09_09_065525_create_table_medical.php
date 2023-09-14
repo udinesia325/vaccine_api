@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger("spot_id")->nullable(false);
             $table->unsignedBigInteger("doctor_id")->nullable(false);
             $table->enum("role",["doctor","officer"]);
+            $table->string("name");
             $table->timestamps();
 
             $table->foreign("spot_id")->on("spots")->references("id");

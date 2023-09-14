@@ -21,7 +21,8 @@ class UserSeeder extends Seeder
             "born_date" => "2003-10-18",
             "gender" => "male",
             "address" => "malang",
-            "regional_id" => 1
+            "regional_id" => 1,
+            "token" => md5(1)
         ]);
     }
 }

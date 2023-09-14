@@ -4,11 +4,13 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Consultations;
 use App\Models\Doctor;
 use App\Models\Medical;
 use App\Models\Regional;
 use App\Models\Spot;
 use App\Models\SpotVaccines;
+use App\Models\User;
 use App\Models\Vaccine;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -65,7 +67,26 @@ class DatabaseSeeder extends Seeder
         Medical::create([
             "spot_id"=> 1,
             "doctor_id" => 1,
-            "role" => "doctor"
+            "role" => "doctor",
+            "name" => fake()->firstNameFemale()
+        ]);
+        User::create([
+            "id_card_number" => 1 ,
+            "password" => Hash::make("test"),
+            "name" => "test",
+            "born_date" => "2003-10-18",
+            "gender" => "male",
+            "address" => "malang",
+            "regional_id" => 1,
+            "token" => md5(1)
+        ]);
+        Consultations::create([
+            "user_id" => 1,
+            "doctor_id" => 1,
+            "status" => "accepted",
+            "disease_history" => "test",
+            "current_symptoms" => "test",
+            "notes" => "test"
         ]);
     }
 }
