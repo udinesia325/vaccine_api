@@ -3,6 +3,7 @@
 use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\SpotController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VaccinationController;
 use App\Http\Middleware\ApiTokenMiddleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -35,4 +36,9 @@ Route::middleware(ApiTokenMiddleware::class)->group(function () {
     Route::get("/spots/{spot_id}", [SpotController::class, "spot_detail"])
         ->where('spot_id', '[0-9]+');
     Route::get("/spots", [SpotController::class, "show"]);
+    
+    // vaccinations
+    Route::get("/vaccinations",[VaccinationController::class,"show"]);
+    Route::post("/vaccinations",[VaccinationController::class,"store"]);
+
 });

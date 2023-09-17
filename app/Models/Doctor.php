@@ -10,6 +10,7 @@ class Doctor extends Model
 {
     use HasFactory;
     public $table = "doctor";
+    protected $guarded = ["id"];
 
     function consultations():HasMany {
         return $this->hasMany(Consultations::class);

@@ -9,4 +9,5 @@ class Regional extends Model
 {
     use HasFactory;
     public $table = "regional";
+    protected $guarded = ["id"];
 }
