@@ -7,7 +7,8 @@
 
 ## Introduction
 
-this as a backend application for create a vaccinations
+
+this is a backend application for create a vaccinations api
 
 ### Server Requirements
 
